@@ -1,0 +1,65 @@
+{
+  "output_fields": [
+    "pagina",
+    "nome_escola",
+    "codigo_inep",
+    "nome_gre",
+    "produto",
+    "total_kg",
+    "data_inicio_obs",
+    "data_fim_obs"
+  ],
+
+  "regex_patterns": {
+    "codigo_inep": [
+      "ESCOLA\\s*:\\s*\\n?\\s*([0-9]{8}[A-Z]?)\\s*[-–]",
+      "\\bINEP\\s*[:\\-]?\\s*N?[ºo]?\\s*([0-9]{8})",
+      "C[oó]digo\\s+INEP\\s*[:\\-]?\\s*([0-9]{8})"
+    ],
+
+    "nome_escola": [
+      "ESCOLA\\s*:\\s*\\n?\\s*[0-9]{8}[A-Z]?\\s*[-–]\\s*(.*?)(?=\\n\\s*(?:AV|AV\\.|AVENIDA|RUA|R\\b|R\\.|EST|ESTRADA|ENG|PR|PRAÇA|PRACA|SITIO|SÍTIO|ROD|RODOVIA|TRAVESSA)\\b|\\n\\s*(?:GRE|nRF|GFE|GRF)\\s*[:•]|\\n\\s*Fornecimento\\s+do\\s+produto)",
+      "ESCOLA\\s*:\\s*(.*?)(?=\\n\\s*(?:AV|AV\\.|AVENIDA|RUA|R\\b|R\\.|EST|ESTRADA|ENG|PR|PRAÇA|PRACA|SITIO|SÍTIO|ROD|RODOVIA|TRAVESSA)\\b|\\n\\s*(?:GRE|nRF|GFE|GRF)\\s*[:•]|\\n\\s*Fornecimento\\s+do\\s+produto)"
+    ],
+
+    "nome_gre": [
+      "(?:GRE|nRF|GFE|GRF)\\s*[:•]?\\s*(?:GRE\\s+)?(.*?)(?=\\n\\s*Fornecimento\\s+do\\s+produto)",
+      "(?:GRE|nRF|GFE|GRF)\\s*[:•]?\\s*(?:GRE\\s+)?([A-ZÁÀÃÂÉÊÍÓÔÕÚÇ\\s]+?)(?=\\n|Fornecimento|$)"
+    ],
+
+    "produto": [
+      "Fornecimento\\s+do\\s+produto\\s*:\\s*(.*?)(?=\\n\\s*Medida\\s+de\\s+Fornecimento)",
+      "produto\\s*:\\s*(.*?)(?=\\n\\s*Medida\\s+de\\s+Fornecimento|\\n|$)"
+    ],
+
+    "total_kg": [
+      "\\bTotal\\s*:\\s*([0-9]+(?:[,.][0-9]+)?)\\s*KG\\b",
+      "\\bTotal\\s*:\\s*([0-9]+(?:[,.][0-9]+)?)"
+    ],
+
+    "data_inicio_obs": [
+      "per[ií]odo\\s+de\\s+distribui[çc][aã]o.*?de\\s*([0-3]?\\d/[01]?\\d)\\s*[àa]\\s*[0-3]?\\d/[01]?\\d"
+    ],
+
+    "data_fim_obs": [
+      "per[ií]odo\\s+de\\s+distribui[çc][aã]o.*?de\\s*[0-3]?\\d/[01]?\\d\\s*[àa]\\s*([0-3]?\\d/[01]?\\d)"
+    ]
+  },
+
+  "fallback_patterns": {
+    "codigo_inep": {
+      "full_text": [
+        "ESCOLA\\s*:\\s*.*?\\b([0-9]{8}[A-Z]?)\\s*[-–]",
+        "\\b([0-9]{8}[A-Z]?)\\s*[-–]\\s*ESCOLA"
+      ],
+      "school_name_capture": [
+        "\\b([0-9]{8}[A-Z]?)\\s*[-–]"
+      ]
+    }
+  },
+
+  "flags": [
+    "IGNORECASE",
+    "DOTALL"
+  ]
+}
